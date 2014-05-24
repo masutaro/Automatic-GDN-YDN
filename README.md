@@ -9,7 +9,7 @@ Automatic operation enable / pause of GDN, YDN
 # SYNOPSYS
 
   java -jar ./selenium-server-standalone.jar
-  carton exec -- ./adwords.pl
+  carton exec -- ./adwords.pl sample.tsv
 
 # INSTALLATION
 
@@ -27,3 +27,8 @@ Third, set environment variable.
 
        export PERL5LIB=~/local/lib/perl5
        export PATH=$PATH:~/local/bin
+
+Fourth, set username and password.
+
+       my $email  = '';
+       my $passwd = '';

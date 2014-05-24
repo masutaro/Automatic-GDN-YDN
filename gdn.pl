@@ -10,7 +10,7 @@ use File::Slurp qw(read_file);
 
 my $email  = '';
 my $passwd = '';
-my @line   = read_file('adwords.tsv', binmode => ':utf8');
+my @line   = read_file($ARGV[0], binmode => ':utf8');
 my %enable = ();
 my %pause  = ();
 
