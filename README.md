@@ -13,22 +13,31 @@ Automatic operation enable / pause of GDN, YDN
 
 # INSTALLATION
 
-First, install cpanm.
+First, git clone.
+
+       git clone https://github.com/masutaro/Automatic-GDN-YDN.git
+
+Second, install cpanm.
 
        cd ~/bin
        curl -LO http://xrl.us/cpanm
        chmod +x cpanm   
 
-Second, install Carton.
+Third, install Carton.
 
-        cpanm -l ~/local Carton
+       cpanm -l ~/local Carton
 
-Third, set environment variable.
+Fourth, set environment variable.
 
        export PERL5LIB=~/local/lib/perl5
        export PATH=$PATH:~/local/bin
 
-Fourth, modify gdn.pl, $email and $passwd.
+Fifth, install CPAN modules.
+
+       cd Automatic-GDN-YDN
+       carton
+
+Sixth, modify gdn.pl, $email and $passwd.
 
        my $email  = '';
        my $passwd = '';
