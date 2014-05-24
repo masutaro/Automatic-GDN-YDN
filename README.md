@@ -28,7 +28,7 @@ Third, set environment variable.
        export PERL5LIB=~/local/lib/perl5
        export PATH=$PATH:~/local/bin
 
-Fourth, set username and password.
+Fourth, modify gdn.pl, $email and $passwd.
 
        my $email  = '';
        my $passwd = '';
