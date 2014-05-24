@@ -8,8 +8,8 @@ Automatic operation enable / pause of GDN, YDN
 
 # SYNOPSYS
 
-  java -jar ./selenium-server-standalone.jar
-  carton exec -- ./adwords.pl sample.tsv
+       java -jar ./selenium-server-standalone.jar
+       carton exec -- ./adwords.pl sample.tsv
 
 # INSTALLATION
 
