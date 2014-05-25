@@ -8,11 +8,11 @@ use Data::Dumper qw(Dumper);
 use Selenium::Remote::Driver;
 use File::Slurp qw(read_file);
 
-my $email  = '';
-my $passwd = '';
-my @line   = read_file($ARGV[0], binmode => ':utf8');
-my %enable = ();
-my %pause  = ();
+my $user_name  = '';
+my $passwd     = '';
+my @line       = read_file($ARGV[0], binmode => ':utf8');
+my %enable     = ();
+my %pause      = ();
 
 for my $line (@line) {
     chomp $line;
@@ -31,18 +31,21 @@ for my $line (@line) {
 }
 
 #
-# 画面オープン -> ログイン
+# 画面オープン -> ログイン -> キャンペーン管理
 #
 my $driver = Selenium::Remote::Driver->new;
 $driver->set_implicit_wait_timeout(10000);
-$driver->get('https://adwords.google.com/cm/CampaignMgmt');
+$driver->get('https://yadui.business.yahoo.co.jp/ols/adv/Top/index');
 
-my $elm = $driver->find_element('//input[@id="Email"]');
-$elm->send_keys($email);
+my $elm = $driver->find_element('//input[@id="user_name"]');
+$elm->send_keys($user_name);
 
-$elm = $driver->find_element('//input[@id="Passwd"]');
+$elm = $driver->find_element('//input[@id="password"]');
 $elm->send_keys($passwd);
 $elm->submit;
+
+$elm = $driver->find_element('//a[text()="キャンペーン管理"]');
+$elm->click;
 
 #
 # 操作
@@ -55,7 +58,7 @@ sub change_status {
 
     for my $campaign (keys %{ $hash }) {
         $elm = $driver->find_element(
-            sprintf('//a[@nodetype="campaign" and text()="%s"]', $campaign)
+            sprintf('//a[@mode="CA" and text()="%s"]', $campaign)
         );
         $elm->click;
 
@@ -64,29 +67,23 @@ sub change_status {
 
         for my $group (@group) {
             $elm = $driver->find_element(
-                sprintf('//a[text()="%s"]/parent::div/parent::td/preceding-sibling::td/preceding-sibling::td/input', $group)
+                sprintf('//a[contains(@href, "#AG") and text()="%s"]/parent::td/preceding-sibling::th/input[@type="checkbox"]', $group)
             );
             $elm->click;
         }
 
-        $elm = $driver->find_element('//div[text()="編集"]');
+        $elm = $driver->find_element('//a[@id="yjJtSetAGLumpEditBtn"]');
         $elm->click;
 
         if ($status eq 'enable') {
-            $elm = $driver->find_element('//div[@gwtdebugid="scripty-bulk-adgroups-enable"]');
+            $elm = $driver->find_element('//a[contains(@onclick, "yjJtSetAG") and contains(@onclick, "on")]');
             $elm->click;
         }
         elsif ($status eq 'pause') {
-            $elm = $driver->find_element('//div[@gwtdebugid="scripty-bulk-adgroups-pause"]');
+            $elm = $driver->find_element('//a[contains(@onclick, "yjJtSetAG") and contains(@onclick, "off")]');
             $elm->click;
         }
         $driver->pause(5000);
-
-        for my $group (@group) {
-            $elm = $driver->find_element(
-                sprintf('//a[text()="%s"]/parent::div/parent::td/preceding-sibling::td/preceding-sibling::td/input', $group)
-            );
-            $elm->click;
-        }
+        $driver->refresh;
     }
 }
